@@ -2,6 +2,7 @@
 import json
 import re
 import uuid
+from pathlib import Path
 
 from .vaccine_management_exception import VaccineManagementException
 from .vaccine_patient_register import VaccinePatientRegister
