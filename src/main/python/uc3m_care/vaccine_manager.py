@@ -54,7 +54,8 @@ class VaccineManager:
         try:
             self.validate_uuid4(patient_id)
         except VaccineManagementException as error:
-            raise VaccineManagementException("Invalid patient ID") from error
+            #raise VaccineManagementException("Invalid patient ID") from error
+            raise VaccineManagementException("Invalid UUID format") from error
 
         if registration_type not in ["Regular", "Family"]:
             raise VaccineManagementException("Invalid registration type")
