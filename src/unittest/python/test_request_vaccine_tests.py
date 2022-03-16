@@ -15,7 +15,7 @@ class MyTestCase(TestCase):
     def setUp(self) -> None:
         self.patient_data = {
             "patient_id": "43831e01-cd0f-4b97-aa6d-c071b42129f0",
-            "name_surname": "Christoph Hartmann",
+            "name_surname": "Fernando Alonso",
             "registration_type": "Family",
             "phone_number": "123456789",
             "age": 20,
