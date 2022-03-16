@@ -87,35 +87,60 @@ class MyTestCase(TestCase):
         self.assertEqual(patient_id_test, hashlib.md5(json.dumps(patient).encode("utf-8")).hexdigest())
         
     
-    def numerotelef_muycorto( self ):
+    def test_numerotelef_muycorto( self ):
         #Esta comprobara que el numero de telefono no es demasiado corto
         patient = self.patient_data.copy()
         patient["phone_number"] = 624
-        
-        
-        
-        
+        vaccine_manager = VaccineManager()
+        with self.assertRaises(VaccineManagementException) as exception:
+            vaccine_manager.request_vaccination_id(**patient)
+        self.assertEqual(exception.exception.message, "Invalid phone number")
     
-    def numerotelef_nonumero( self ):
+    
+    def test_numerotelef_nonumero( self ):
         #Esta comprobara que se da un numero de telefono y no cualquier cosa
         patient = self.patient_data.copy()
         patient["phone_number"] = "Pedro sanchez"
+        vaccine_manager = VaccineManager()
+        with self.assertRaises(VaccineManagementException) as exception:
+            vaccine_manager.request_vaccination_id(**patient)
+        self.assertEqual(exception.exception.message, "Invalid phone number")
         
         
-        
-        
-        
-    def numerotelef_muylargo( self ):
+    def test_numerotelef_muylargo( self ):
         #Comprueba que el numero de telefono no es muy largo
         patient = self.patient_data.copy()
         patient["phone_number"] = 6918237182461746
-
+        vaccine_manager = VaccineManager()
+        with self.assertRaises(VaccineManagementException) as exception:
+            vaccine_manager.request_vaccination_id(**patient)
+        self.assertEqual(exception.exception.message, "Invalid phone number")
+    
+    
+    def test_tiporegistro_novalido( self ):
+        #Esta comprobara que se da o bien Family o Regular
+        patient = self.patient_data.copy()
+        patient["registration_type"] = "Premium"
+        vaccine_manager = VaccineManager()
+        with self.assertRaises(VaccineManagementException) as exception:
+            vaccine_manager.request_vaccination_id(**patient)
+        self.assertEqual(exception.exception.message, "Invalid registration type")
         
+    
+    def test_tiporegistro_nostr( self ):
+        patient = self.patient_data.copy()
+        patient["registration_type"] = 12
+        vaccine_manager = VaccineManager()
+        with self.assertRaises(VaccineManagementException) as exception:
+            vaccine_manager.request_vaccination_id(**patient)
+        self.assertEqual(exception.exception.message, "Invalid registration type")
         
-    #SEGUIR COMPROBANDO CON FUNCIONES PARA EL ID (COMPROBAR FORMATO CORRECTO) 
-    # |
-    # |
-    #\/
+    
+    
+    
+    #def test_uuid_correcto( self ):  <--------------- Completar!!!!!!!!!!!!!
+        
+    
         
         
 if __name__ == '__main__':
