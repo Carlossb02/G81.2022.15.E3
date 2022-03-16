@@ -112,6 +112,10 @@ class MyTestCase(TestCase):
 
         
         
+    #SEGUIR COMPROBANDO CON FUNCIONES PARA EL ID (COMPROBAR FORMATO CORRECTO) 
+    # |
+    # |
+    #\/
         
         
 if __name__ == '__main__':
