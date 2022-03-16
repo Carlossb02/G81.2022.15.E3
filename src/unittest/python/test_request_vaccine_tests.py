@@ -76,10 +76,6 @@ class MyTestCase(TestCase):
             vaccine_manager.request_vaccination_id(**patient)
         self.assertEqual(exception.exception.message, "Invalid UUID format")
 
-
-
-
-
     @freeze_time("2020-04-26")
     def test_registro_correcto( self ):
         vaccine_manager = VaccineManager()
@@ -89,8 +85,34 @@ class MyTestCase(TestCase):
         time_stamp = datetime.timestamp(justnow)
         patient["time_stamp"] = time_stamp
         self.assertEqual(patient_id_test, hashlib.md5(json.dumps(patient).encode("utf-8")).hexdigest())
+        
+    
+    def numerotelef_muycorto( self ):
+        #Esta comprobara que el numero de telefono no es demasiado corto
+        patient = self.patient_data.copy()
+        patient["phone_number"] = 624
+        
+        
+        
+        
+    
+    def numerotelef_nonumero( self ):
+        #Esta comprobara que se da un numero de telefono y no cualquier cosa
+        patient = self.patient_data.copy()
+        patient["phone_number"] = "Pedro sanchez"
+        
+        
+        
+        
+        
+    def numerotelef_muylargo( self ):
+        #Comprueba que el numero de telefono no es muy largo
+        patient = self.patient_data.copy()
+        patient["phone_number"] = 6918237182461746
 
-
-
+        
+        
+        
+        
 if __name__ == '__main__':
     unittest.main()
