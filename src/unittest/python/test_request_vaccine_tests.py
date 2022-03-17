@@ -169,6 +169,33 @@ class MyTestCase(TestCase):
             data = json.load(file)
             file.close()
         self.assertEqual(data, self.patient_data)
-        
+    
+    def test_hash_es_str(self):
+        #Esta funcion simplemente comprueba que lo que devuelve el return de la funcion requestvaccine es una str
+        patient = self.patient_data.copy()
+        vaccine_manager = VaccineManager()
+        hashprueba = vaccine_manager.request_vaccination_id(**patient)
+        self.assertEqual(type(hashprueba), str, "Invalid hash type")
+    
+    
+    def test_tamanocorrectohash(self):
+        #Esta funcion comprueba que el hash MD5 que devuelve el return de la funcion requestvaccinationid es de 32 digitos
+        patient = self.patient_data.copy()
+        vaccine_manager = VaccineManager()
+        hashprueba = vaccine_manager.request_vaccination_id(**patient)
+        self.assertEqual(len(hashprueba), 32, "Incorrect returned hash length")
+    
+    
+    def test_comprobarhash(self):
+        #Esta funcion comprueba que el hash que devuelve el return de la funcion es el correcto
+        patient = self.patient_data.copy()
+        vaccine_manager = VaccineManager()
+        hashprueba = vaccine_manager.request_vaccination_id(**patient)
+        #Utilizo para un hash los datos del self.patient
+        hashcomprobar = vaccine_manager.request_vaccination_id(**self.patient_data)
+        self.assertEqual(hashprueba, hashcomprobar, "Incorrect returned hash")
+    
+    
+    
 if __name__ == '__main__':
     unittest.main()
