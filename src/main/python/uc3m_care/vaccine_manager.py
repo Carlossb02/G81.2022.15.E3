@@ -1,10 +1,11 @@
+"""Vaccine manager"""
 import json
 import re
 import uuid
 from pathlib import Path
 
-from .vaccine_management_exception import VaccineManagementException
-from .vaccine_patient_register import VaccinePatientRegister
+from uc3m_care.vaccine_management_exception import VaccineManagementException
+from uc3m_care.vaccine_patient_register import VaccinePatientRegister
 
 
 class VaccineManager:
@@ -53,14 +54,14 @@ class VaccineManager:
         try:
             self.validate_uuid4(patient_id)
         except VaccineManagementException as error:
-            raise VaccineManagementException("Invalid UUID format") from error
+            raise VaccineManagementException("Invalid patient ID") from error
 
         if registration_type not in ["Regular", "Family"]:
             raise VaccineManagementException("Invalid registration type")
 
         if name_surname == "":
             raise VaccineManagementException("Invalid name and surname")
-        elif len(name_surname) > 30:
+        if len(name_surname) > 30:
             raise VaccineManagementException("Invalid name and surname")
 
         split_name_surname = name_surname.split(" ")
@@ -89,8 +90,6 @@ class VaccineManager:
 
         with open(self.patient_registry, "r+",
                   encoding="utf-8") as file:
-            data = json.load(file)
-            #data.append(vaccine_patient_register.__dict__())
             file.seek(0)
             json.dump({
             "patient_id": patient_id, "name_surname": name_surname,

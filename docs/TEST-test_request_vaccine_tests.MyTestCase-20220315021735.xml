@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test_request_vaccine_tests.MyTestCase-20220315021735" tests="1" file="test_request_vaccine_tests.py" time="0.000" timestamp="2022-03-15T02:17:36" failures="1" errors="0" skipped="0">
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_something" time="0.000" timestamp="2022-03-15T02:17:36">
+		<failure type="AssertionError" message="True != False"><![CDATA[Traceback (most recent call last):
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 59, in testPartExecutor
+    yield
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 550, in _callTestMethod
+    method()
+  File "c:\users\talib\desktop\g81.2022.15.e3\src\unittest\python\test_request_vaccine_tests.py", line 6, in test_something
+    self.assertEqual(True, False)
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 829, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 822, in _baseAssertEqual
+    raise self.failureException(msg)
+AssertionError: True != False
+]]></failure>
+	</testcase>
+</testsuite>

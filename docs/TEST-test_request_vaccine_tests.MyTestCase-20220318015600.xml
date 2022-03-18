@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test_request_vaccine_tests.MyTestCase-20220318015600" tests="19" file="test_request_vaccine_tests.py" time="0.068" timestamp="2022-03-18T01:56:00" failures="0" errors="0" skipped="0">
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_comprobarhash" time="0.068" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_edad_inferior" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_edad_no_numero" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_edad_superior" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_guardado_correcto_json" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_hash_es_str" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_nombre_largo" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_nombre_sin_apellido" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_nombre_vacio" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_numerotelef_muycorto" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_numerotelef_muylargo" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_numerotelef_nonumero" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_patientID_incorrecto" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_registro_correcto" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_tamanocorrectohash" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_tiporegistro_nostr" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_tiporegistro_novalido" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_uuid_correcta" time="0.000" timestamp="2022-03-18T01:56:00"/>
+	<testcase classname="test_request_vaccine_tests.MyTestCase" name="test_uuid_incorrecta" time="0.000" timestamp="2022-03-18T01:56:00"/>
+</testsuite>

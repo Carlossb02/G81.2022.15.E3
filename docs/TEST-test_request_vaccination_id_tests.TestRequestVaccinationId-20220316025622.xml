@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test_request_vaccination_id_tests.TestRequestVaccinationId-20220316025622" tests="2" file="test_request_vaccination_id_tests.py" time="0.031" timestamp="2022-03-16T02:56:23" failures="0" errors="1" skipped="0">
+	<testcase classname="test_request_vaccination_id_tests.TestRequestVaccinationId" name="test_wrong_uuid_not_v4" time="0.000" timestamp="2022-03-16T02:56:23"/>
+	<testcase classname="test_request_vaccination_id_tests.TestRequestVaccinationId" name="test_ok" time="0.031" timestamp="2022-03-16T02:56:23">
+		<error type="TypeError" message="string indices must be integers"><![CDATA[Traceback (most recent call last):
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 59, in testPartExecutor
+    yield
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 550, in _callTestMethod
+    method()
+  File "c:\users\talib\desktop\g81.2022.15.e3\venv\lib\site-packages\freezegun\api.py", line 789, in wrapper
+    result = func(*args, **kwargs)
+  File "c:\users\talib\desktop\g81.2022.15.e3\src\unittest\python\test_request_vaccination_id_tests.py", line 53, in test_ok
+    if patient["patient_id"] == self.patient_data["patient_id"]:
+TypeError: string indices must be integers
+]]></error>
+	</testcase>
+</testsuite>
