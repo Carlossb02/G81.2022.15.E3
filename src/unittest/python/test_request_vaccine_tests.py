@@ -69,6 +69,15 @@ class MyTestCase(TestCase):
             vaccine_manager.request_vaccination_id(**patient)
         self.assertEqual(exception.exception.message, "Invalid age")
 
+    def test_edad_no_int(self):
+        """Se comprueba que se devuelve una excepción si la edad no es un número entero"""
+        patient=self.patient_data.copy()
+        patient["age"]=float(23.2)
+        vaccine_manager = VaccineManager()
+        with self.assertRaises(VaccineManagementException) as exception:
+            vaccine_manager.request_vaccination_id(**patient)
+        self.assertEqual(exception.exception.message, "Invalid age")
+
     def test_nombre_vacio(self):
         """Se comprueba que se devuelve una excepción si el nombre es una string vacía"""
         patient=self.patient_data.copy()
@@ -95,6 +104,24 @@ class MyTestCase(TestCase):
         with self.assertRaises(VaccineManagementException) as exception:
             vaccine_manager.request_vaccination_id(**patient)
         self.assertEqual(exception.exception.message, "Invalid name and surname")
+
+    def test_nombre_nostring(self):
+        """Se comprueba que se devuelve una excepción si el nombre no es una string"""
+        patient=self.patient_data.copy()
+        patient["name_surname"]=1234567
+        vaccine_manager = VaccineManager()
+        with self.assertRaises(VaccineManagementException) as exception:
+            vaccine_manager.request_vaccination_id(**patient)
+        self.assertEqual(exception.exception.message, "Invalid name and surname")
+
+    def test_patient_id_nostring(self):
+        """Se comprueba que se devuelve una excepción si la id del paciente no es una string"""
+        patient=self.patient_data.copy()
+        patient["patient_id"]=382843292
+        vaccine_manager = VaccineManager()
+        with self.assertRaises(VaccineManagementException) as exception:
+            vaccine_manager.request_vaccination_id(**patient)
+        self.assertEqual(exception.exception.message, "Invalid patient ID")
 
     def test_patient_id_incorrecto(self):
         """Se comprueba que se devuelve una excepción si la id del paciente no es correcta"""
@@ -208,6 +235,18 @@ class MyTestCase(TestCase):
         #Utilizo para un hash los datos del self.patient
         hashcomprobar = vaccine_manager.request_vaccination_id(**self.patient_data)
         self.assertEqual(hashprueba, hashcomprobar, "Incorrect returned hash")
+
+    @freeze_time("2020-04-26")
+    def test_comprobarhash_distinto(self):
+        """Esta funcion comprueba que el hash que devuelve el return de la funcion es el distinto
+        introduciendo distintos datos"""
+        patient = self.patient_data.copy()
+        patient["age"]=32
+        vaccine_manager = VaccineManager()
+        hashprueba = vaccine_manager.request_vaccination_id(**patient)
+        #Utilizo para un hash los datos del self.patient
+        hashcomprobar = vaccine_manager.request_vaccination_id(**self.patient_data)
+        self.assertNotEqual(hashprueba, hashcomprobar, "Incorrect returned hash")
 
 if __name__ == '__main__':
     unittest.main()

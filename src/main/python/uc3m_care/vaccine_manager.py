@@ -51,6 +51,8 @@ class VaccineManager:
         :param age:
         :return MD5 hash of the patient ID (str)
         """
+        if type(patient_id)!=str:
+            raise VaccineManagementException("Invalid patient ID")
         try:
             self.validate_uuid4(patient_id)
         except VaccineManagementException as error:
@@ -59,7 +61,7 @@ class VaccineManager:
         if registration_type not in ["Regular", "Family"]:
             raise VaccineManagementException("Invalid registration type")
 
-        if name_surname == "":
+        if name_surname == "" or type(name_surname)!=str:
             raise VaccineManagementException("Invalid name and surname")
         if len(name_surname) > 30:
             raise VaccineManagementException("Invalid name and surname")
@@ -81,7 +83,7 @@ class VaccineManager:
         except ValueError as error:
             raise VaccineManagementException("Invalid age") from error
 
-        if int_age < 6 or int_age > 125:
+        if int_age < 6 or int_age > 125 or type(age)!=int:
             raise VaccineManagementException("Invalid age")
 
         vaccine_patient_register = VaccinePatientRegister(patient_id=patient_id, full_name=name_surname,
