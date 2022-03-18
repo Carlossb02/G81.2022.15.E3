@@ -1,10 +1,10 @@
+"""vaccine_manager"""
 import json
 import re
 import uuid
 from pathlib import Path
-
-from .vaccine_management_exception import VaccineManagementException
-from .vaccine_patient_register import VaccinePatientRegister
+from uc3m_care.vaccine_management_exception import VaccineManagementException
+from uc3m_care.vaccine_patient_register import VaccinePatientRegister
 
 
 class VaccineManager:
@@ -83,9 +83,8 @@ class VaccineManager:
         if int_age < 6 or int_age > 125:
             raise VaccineManagementException("Invalid age")
 
-        vaccine_patient_register = VaccinePatientRegister(patient_id=patient_id, full_name=name_surname,
-                                                          phone_number=phone_number,
-                                                          age=age, registration_type=registration_type)
+        vaccine_patient_register = VaccinePatientRegister(patient_id, name_surname,
+                                                          phone_number, age, registration_type)
 
         with open(self.patient_registry, "r+",
                   encoding="utf-8") as file:
