@@ -137,13 +137,6 @@ class MyTestCase(TestCase):
         """Se comprueba que la función devuelve el md5 si las entradas son correctas"""
         vaccine_manager = VaccineManager()
         patient = self.patient_data.copy()
-        data={}
-        #Borramos el Json para evitar errores
-        with open(self.direccion, 'w', encoding="utf-8") as file:
-            file.seek(0)
-            json.dump(data, file, indent=2)
-            file.truncate()
-            file.close()
         patient_id_test=vaccine_manager.request_vaccination_id(**patient)
         justnow = datetime.utcnow()
         time_stamp = datetime.timestamp(justnow)
@@ -197,20 +190,16 @@ class MyTestCase(TestCase):
 
     def test_guardado_correcto_json(self):
         """Se comprueba que los datos guardados en el Json son correctos"""
-        #Vaciamos el JSON para evitar errores
-        data={}
-        with open(self.direccion, 'w', encoding="utf-8") as file:
-            file.seek(0)
-            json.dump(data, file, indent=2)
-            file.truncate()
-            file.close()
-        vaccine_manager=VaccineManager()
-        vaccine_manager.request_vaccination_id(**self.patient_data)
         with open(self.direccion, 'r', encoding="utf-8") as file: #Leemos el fichero
             data = json.load(file)
             file.close()
-        del data["PatientSystemID"]
-        self.assertEqual(data, self.patient_data)
+        found=False
+        for dict in data:
+            del dict["time_stamp"]
+            del dict["patient_system_id"]
+            if dict==self.patient_data:
+                found=True
+        self.assertEqual(found, True)
 
     def test_hash_es_str(self):
         """Esta funcion simplemente comprueba que lo que devuelve el return de la funcion requestvaccine es una str"""

@@ -92,11 +92,10 @@ class VaccineManager:
 
         with open(self.patient_registry, "r+",
                   encoding="utf-8") as file:
+            data = json.load(file)
+            data.append(vaccine_patient_register.__dict__())
             file.seek(0)
-            json.dump({
-            "patient_id": patient_id, "name_surname": name_surname,
-            "registration_type": registration_type,
-            "phone_number": phone_number, "age": age, "PatientSystemID": vaccine_patient_register.patient_system_id}, file, indent=2)
+            json.dump(data, file, indent=2)
 
         return vaccine_patient_register.patient_system_id
 
