@@ -111,16 +111,33 @@ class VaccineManager:
 
     def get_vaccine_date (self, input_file):
 
+        path_exist=Path(input_file)
+        if path_exist!=True:
+            raise VaccineManagementException("File does not exist")
         if input_file[-5:]!=".json":
             raise VaccineManagementException("Invalid file type")
         with open(input_file, 'r', encoding="utf-8") as file:  # Leemos el fichero
             data = json.load(file)
             file.close()
         if data.keys()!=["PatientSystemID", "ContactPhoneNumber"]:
-            raise VaccineManagementException("Invalid JSON format")
+            raise VaccineManagementException("Invalid JSON structure")
+        p_id=data["PatientSystemID"]
+        if type(p_id)!=str or len(p_id)!=32:
+            raise VaccineManagementException("Invalid PatientSystemID")
+        p_phone=data["ContactPhoneNumber"]
+        if type(p_phone)!=str or len(p_phone)!=9:
+            raise VaccineManagementException("Invalid phone number")
+        try:
+            int(p_phone)
+        except ValueError as error:
+            raise VaccineManagementException("Invalid phone number") from error
 
 
 
 
 
 
+
+
+
+print (path.is_file())
