@@ -3,5 +3,6 @@
   "name_surname": "Fernando Alonso",
   "registration_type": "Family",
   "phone_number": "123456789",
-  "age": 20
+  "age": 20,
+  "PatientSystemID": "9b83ae787ef0791f263ef1ac1e1b6fc6"
 }

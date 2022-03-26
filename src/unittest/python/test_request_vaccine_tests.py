@@ -209,6 +209,7 @@ class MyTestCase(TestCase):
         with open(self.direccion, 'r', encoding="utf-8") as file: #Leemos el fichero
             data = json.load(file)
             file.close()
+        del data["PatientSystemID"]
         self.assertEqual(data, self.patient_data)
 
     def test_hash_es_str(self):

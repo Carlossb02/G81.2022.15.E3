@@ -96,6 +96,32 @@ class VaccineManager:
             json.dump({
             "patient_id": patient_id, "name_surname": name_surname,
             "registration_type": registration_type,
-            "phone_number": phone_number, "age": age,}, file, indent=2)
+            "phone_number": phone_number, "age": age, "PatientSystemID": vaccine_patient_register.patient_system_id}, file, indent=2)
 
         return vaccine_patient_register.patient_system_id
+
+    def generate_json (self, patient_id, phone_number):
+        """Esta funcion de apoyo nos permite generar los ficheros JSON
+        para la función get_vaccine_data() y devuelve su dirección"""
+
+        patient={"PatientSystemID": patient_id, "ContactPhoneNumber": phone_number}
+        path_file=self.json_collection + "/" + patient_id + ".json"
+        with open(path_file, 'w') as json_file:
+            json.dump(patient, json_file, indent=2)
+        return path_file
+
+    def get_vaccine_date (self, input_file):
+
+        if input_file[-5:]!=".json":
+            raise VaccineManagementException("Invalid file type")
+        with open(input_file, 'r', encoding="utf-8") as file:  # Leemos el fichero
+            data = json.load(file)
+            file.close()
+        if data.keys()!=["PatientSystemID", "ContactPhoneNumber"]:
+            raise VaccineManagementException("Invalid JSON format")
+
+
+
+
+
+
