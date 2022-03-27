@@ -11,14 +11,16 @@ class VaccinationAppoinment():
         self.__patient_id = guid
         self.__patient_sys_id = patient_sys_id
         self.__phone_number = patient_phone_number
+        self.__appoinment_date_format=""
         justnow = datetime.utcnow()
         self.__issued_at = datetime.timestamp(justnow)
         if days == 0:
-            self.__appoinment_date = 0
+            self.__appoinment_date = "0"
         else:
             #timestamp is represneted in seconds.microseconds
             #age must be expressed in senconds to be added to the timestap
-            self.__appoinment_date = self.__issued_at + (days * 24 * 60 * 60)
+            self.__appoinment_date = str(self.__issued_at + (days * 24 * 60 * 60))
+        self.__issued_at=str(self.__issued_at)
 
     def __signature_string(self):
         """Composes the string to be used for generating the key for the date"""
@@ -62,9 +64,10 @@ class VaccinationAppoinment():
 
     @issued_at.setter
     def issued_at( self, value ):
-        self.__issued_at = value
+        self.__issued_at = datetime.fromtimestamp(int(float(value)))
 
     @property
     def appoinment_date( self ):
         """Returns the vaccination date"""
         return self.__appoinment_date
+

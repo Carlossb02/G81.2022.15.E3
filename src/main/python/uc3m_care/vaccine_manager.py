@@ -4,9 +4,10 @@ import re
 import uuid
 from pathlib import Path
 
+from datetime import datetime
 from uc3m_care.vaccine_management_exception import VaccineManagementException
 from uc3m_care.vaccine_patient_register import VaccinePatientRegister
-
+from uc3m_care.vaccination_appoinment import VaccinationAppoinment
 
 class VaccineManager:
     """Class for providing the methods for managing the vaccination process"""
@@ -22,6 +23,8 @@ class VaccineManager:
         self.__uuid4_rule = re.compile(r'^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB]'
                                        r'[0-9A-F]{3}-[0-9A-F]{12}$',
                                        re.IGNORECASE)
+
+    #RF1
 
     def validate_uuid4(self, guid: str) -> bool:
         """
@@ -99,32 +102,43 @@ class VaccineManager:
 
         return vaccine_patient_register.patient_system_id
 
+    #RF2
+
     def generate_json (self, patient_id, phone_number):
         """Esta funcion de apoyo nos permite generar los ficheros JSON
         para la función get_vaccine_data() y devuelve su dirección"""
 
         patient={"PatientSystemID": patient_id, "ContactPhoneNumber": phone_number}
         path_file=self.json_collection + "/" + patient_id + ".json"
-        with open(path_file, 'w') as json_file:
+
+        with open(path_file, 'w', encoding="utf-8") as json_file:
             json.dump(patient, json_file, indent=2)
+
         return path_file
 
     def get_vaccine_date (self, input_file):
 
         path_exist=Path(input_file)
-        if path_exist!=True:
+        if not path_exist:
             raise VaccineManagementException("File does not exist")
+
         if input_file[-5:]!=".json":
             raise VaccineManagementException("Invalid file type")
+
         with open(input_file, 'r', encoding="utf-8") as file:  # Leemos el fichero
             data = json.load(file)
             file.close()
-        if data.keys()!=["PatientSystemID", "ContactPhoneNumber"]:
+
+        if list(data.keys())!=["PatientSystemID", "ContactPhoneNumber"]:
             raise VaccineManagementException("Invalid JSON structure")
+
         p_id=data["PatientSystemID"]
+
         if type(p_id)!=str or len(p_id)!=32:
             raise VaccineManagementException("Invalid PatientSystemID")
+
         p_phone=data["ContactPhoneNumber"]
+
         if type(p_phone)!=str or len(p_phone)!=9:
             raise VaccineManagementException("Invalid phone number")
         try:
@@ -132,6 +146,38 @@ class VaccineManager:
         except ValueError as error:
             raise VaccineManagementException("Invalid phone number") from error
 
+        ##Buscamos en las solicitudes:
+        with open(self.patient_registry, 'r', encoding="utf-8") as file: #Leemos el fichero
+            solicitudes = json.load(file)
+            file.close()
+
+        found=False
+        p_uuid=""
+
+        for dict in solicitudes:
+            if dict["patient_system_id"]==data["PatientSystemID"]:
+                found=True
+                p_uuid=dict["patient_id"]
+                if dict["phone_number"]!=p_phone:
+                    raise VaccineManagementException("Phone numbers are different")
+
+        if not found:
+            raise VaccineManagementException("This patient is not registered")
+
+        date=VaccinationAppoinment(p_uuid, p_id, p_phone, 10)
+        date_dict={"patient_id": date.patient_id, "phone_number": date.phone_number,
+                   "vaccine_date": str(datetime.fromtimestamp(int(float(date.appoinment_date))))[0:10],"patient_system_id": date.patient_sys_id, "date_signature": date.vaccination_signature}
+
+        print ("Test")
+        with open(self.vaccination_appointments, "r+",
+                  encoding="utf-8") as file:
+            data = json.load(file)
+            data.append(date_dict)
+            file.seek(0)
+            print("PRUEBA")
+            json.dump(data, file, indent=2)
+
+        return date.vaccination_signature
 
 
 
@@ -140,4 +186,7 @@ class VaccineManager:
 
 
 
-print (path.is_file())
+v=VaccineManager()
+path=v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
+
+print(v.get_vaccine_date(path))
