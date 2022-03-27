@@ -179,14 +179,52 @@ class VaccineManager:
 
         return date.vaccination_signature
 
+    
+    
+    
+    
+    def vaccine_patient (self, date_signature):
+        #date_signature representa la firma obtenida en la funcion 2
+
+        #Compruebo formato
+        if date_signature == None:
+            raise VaccineManagementException("Invalid signature")
+        if type(date_signature) != str:
+            raise VaccineManagementException("Invalid signature")
+        if len(date_signature) != 64:
+            raise VaccineManagementException("Invalid signature")
+
+        #Abro el archivo json
+        path_file = self.vaccination_appointments
+        with open(path_file, 'r', encoding="utf-8") as file:
+            data = json.load(file)
+            file.close()
+
+        #Compruebo que tiene el formato correcto
+        if list(data.keys()) != ["patient_id", "phone_number", "vaccine_date", "patient_system_id", "date_signature"]:
+            raise VaccineManagementException("Invalid appointments JSON format")
+
+        #Compruebo si la firma es valida
+        if list(data.date_signature) != date_signature:     #IMPORTANTE COMPROBAR SI NO DA FALLO QUE SE LLAMEN IGUAL!!!!!!!!!!!!
+            raise VaccineManagementException("Invalid date_signature")
+
+        #Paso a comprobar la fecha
+        actual = datetime.utcnow()
+        if list(data.vaccine_date) != actual:
+            raise VaccineManagementException("Invalid vaccine date")
+
+        else:
+            #Sitodo es correcto, registro vacunacion
+            '''(Crear archivo json con gente vacunada correctamente)'''
 
 
 
 
-
+            
 
 
 v=VaccineManager()
 path=v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
 
-print(v.get_vaccine_date(path))
+ruta= v.get_vaccine_date(path)
+print(v.vaccine_patient(ruta))
