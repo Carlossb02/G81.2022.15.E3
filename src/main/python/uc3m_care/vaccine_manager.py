@@ -200,27 +200,59 @@ class VaccineManager:
             data = json.load(file)
             file.close()
 
-        #Compruebo que tiene el formato correcto
-        if list(data.keys()) != ["patient_id", "phone_number", "vaccine_date", "patient_system_id", "date_signature"]:
-            raise VaccineManagementException("Invalid appointments JSON format")
+        #Compruebo que tiene el formato correcto (para cada diccionario)
+        for n in data:
+            if list(n.keys()) != ["patient_id", "phone_number", "vaccine_date", "patient_system_id", "date_signature"]:
+                raise VaccineManagementException("Invalid appointments JSON format")
 
-        #Compruebo si la firma es valida
-        if list(data.date_signature) != date_signature:     #IMPORTANTE COMPROBAR SI NO DA FALLO QUE SE LLAMEN IGUAL!!!!!!!!!!!!
+        #Compruebo si la firma es valida (si la firma se encuentra en el json)
+        encontrado = False
+        #Este indice nos indica en que indice esta la firma dentro del json (para luego comprobar su fecha)
+        indice = 0
+        for n in data:
+            if n["date_signature"] == date_signature:
+                encontrado = True
+                break
+            else:
+                indice += 1
+
+        #Si no la he encontrado, lanzo una excepcion
+        if encontrado == False:
             raise VaccineManagementException("Invalid date_signature")
 
-        #Paso a comprobar la fecha
-        actual = datetime.utcnow()
-        if list(data.vaccine_date) != actual:
+
+        #Si no hay excepcion, la firma está dentro, por lo que paso a comprobar la fecha
+        actual = str(datetime.utcnow())
+        if data[indice] == actual:
             raise VaccineManagementException("Invalid vaccine date")
 
         else:
             #Sitodo es correcto, registro vacunacion
-            '''(Crear archivo json con gente vacunada correctamente)'''
+            #Guardo en un json, el diccionario siguiente (con lo que nos piden: fecha de acceso y firma)
+            towrite = {"Access_date": actual, "Key_value": date_signature}
+            string = json.dumps(towrite)
 
-
-
-
+            with open('registered_vaccinations.json', 'w') as outfile:
+                json.dump(string, outfile)
+                outfile.close()
             
+            #-------COMPROBACIONES INTERNAS (ELIMINAR AL ENTREGAR)------------------------------------------------------------
+            with open('registered_vaccinations.json', 'r') as file:
+                datos = json.load(file)
+                file.close()
+            print("Firma --->", date_signature)
+            print("Diccionario del json con la firma ----> ", data[indice])
+            print("JSON de la Vacunacion registrada ----> ", datos)
+            #-----------------------------------------------------------------------------------------------------------------
+            
+            return True
+
+
+
+
+
+
+
 
 
 v=VaccineManager()
@@ -228,3 +260,4 @@ path=v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
 
 ruta= v.get_vaccine_date(path)
 print(v.vaccine_patient(ruta))
+
