@@ -187,18 +187,22 @@ class VaccineManager:
         #date_signature representa la firma obtenida en la funcion 2
 
         #Compruebo formato
-        if date_signature == None:
+        if date_signature == None or type(date_signature) != str or len(date_signature) != 64:
             raise VaccineManagementException("Invalid signature")
-        if type(date_signature) != str:
-            raise VaccineManagementException("Invalid signature")
-        if len(date_signature) != 64:
-            raise VaccineManagementException("Invalid signature")
-
+        
         #Abro el archivo json
         path_file = self.vaccination_appointments
-        with open(path_file, 'r', encoding="utf-8") as file:
-            data = json.load(file)
-            file.close()
+        
+        #Compruebo que no haya errores al abrir el archivo
+        try:
+            with open(path_file, 'r', encoding="utf-8") as file:
+                data = json.load(file)
+                file.close()
+        except FileNotFoundError as ex:
+            raise VaccineManagerException("Error while opening the file")
+        except json.JSONDecodeError as ex:
+            raise VaccineManagerException("Error while decoding JSON")
+            
 
         #Compruebo que tiene el formato correcto (para cada diccionario)
         for n in data:
@@ -223,7 +227,7 @@ class VaccineManager:
 
         #Si no hay excepcion, la firma está dentro, por lo que paso a comprobar la fecha
         actual = str(datetime.utcnow())
-        if data[indice] == actual:
+        if data[indice] != actual:
             raise VaccineManagementException("Invalid vaccine date")
 
         else:
@@ -232,9 +236,20 @@ class VaccineManager:
             towrite = {"Access_date": actual, "Key_value": date_signature}
             string = json.dumps(towrite)
 
+            
+        #Al abrir el archivo compruebo si da algun error
+        try:    
             with open('registered_vaccinations.json', 'w') as outfile:
                 json.dump(string, outfile)
                 outfile.close()
+                
+                return True
+            
+        except FileNotFoundError as ex:
+            raise VaccineManagerException("Error while opening the file")
+        except json.JSONDecodeError as ex:
+            raise VaccineManagerException("Error while decoding JSON")
+            
             
             #-------COMPROBACIONES INTERNAS (ELIMINAR AL ENTREGAR)------------------------------------------------------------
             with open('registered_vaccinations.json', 'r') as file:
@@ -245,7 +260,7 @@ class VaccineManager:
             print("JSON de la Vacunacion registrada ----> ", datos)
             #-----------------------------------------------------------------------------------------------------------------
             
-            return True
+            
 
 
 
