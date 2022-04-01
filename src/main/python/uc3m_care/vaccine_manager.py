@@ -174,7 +174,6 @@ class VaccineManager:
             data = json.load(file)
             data.append(date_dict)
             file.seek(0)
-            print("PRUEBA")
             json.dump(data, file, indent=2)
 
         return date.vaccination_signature
@@ -199,9 +198,9 @@ class VaccineManager:
                 data = json.load(file)
                 file.close()
         except FileNotFoundError as ex:
-            raise VaccineManagerException("Error while opening the file")
+            raise VaccineManagementException("Error while opening the file")
         except json.JSONDecodeError as ex:
-            raise VaccineManagerException("Error while decoding JSON")
+            raise VaccineManagementException("Error while decoding JSON")
             
 
         #Compruebo que tiene el formato correcto (para cada diccionario)
@@ -243,22 +242,26 @@ class VaccineManager:
                 json.dump(string, outfile)
                 outfile.close()
                 
+                #-------COMPROBACIONES INTERNAS (ELIMINAR AL ENTREGAR)------------------------------------------------------------
+                with open('registered_vaccinations.json', 'r') as file:
+                    datos = json.load(file)
+                    file.close()
+                print("Firma --->", date_signature)
+                print("Diccionario del json con la firma ----> ", data[indice])
+                print("JSON de la Vacunacion registrada ----> ", datos)
+                #-----------------------------------------------------------------------------------------------------------------
+                
+                
                 return True
             
+            
         except FileNotFoundError as ex:
-            raise VaccineManagerException("Error while opening the file")
+            raise VaccineManagementException("Error while opening the file")
         except json.JSONDecodeError as ex:
-            raise VaccineManagerException("Error while decoding JSON")
+            raise VaccineManagementException("Error while decoding JSON")
             
             
-            #-------COMPROBACIONES INTERNAS (ELIMINAR AL ENTREGAR)------------------------------------------------------------
-            with open('registered_vaccinations.json', 'r') as file:
-                datos = json.load(file)
-                file.close()
-            print("Firma --->", date_signature)
-            print("Diccionario del json con la firma ----> ", data[indice])
-            print("JSON de la Vacunacion registrada ----> ", datos)
-            #-----------------------------------------------------------------------------------------------------------------
+            
             
             
 
