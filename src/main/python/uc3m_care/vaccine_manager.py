@@ -18,6 +18,7 @@ class VaccineManager:
     patient_registry = json_store + "/patient_registry.json"
     vaccination_appointments = json_store + "/vaccination_appointments.json"
     vaccination_administration = json_store + "/vaccine_administration.json"
+    registered_vaccinations = json_store + "/registered_vaccinations.json"
 
     def __init__(self) -> None:
         self.__uuid4_rule = re.compile(r'^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB]'
@@ -238,18 +239,9 @@ class VaccineManager:
             
         #Al abrir el archivo compruebo si da algun error
         try:    
-            with open('registered_vaccinations.json', 'w') as outfile:
+            with open(self.registered_vaccinations, 'w') as outfile:
                 json.dump(string, outfile)
                 outfile.close()
-                
-                #-------COMPROBACIONES INTERNAS (ELIMINAR AL ENTREGAR)------------------------------------------------------------
-                with open('registered_vaccinations.json', 'r') as file:
-                    datos = json.load(file)
-                    file.close()
-                print("Firma --->", date_signature)
-                print("Diccionario del json con la firma ----> ", data[indice])
-                print("JSON de la Vacunacion registrada ----> ", datos)
-                #-----------------------------------------------------------------------------------------------------------------
                 
                 
                 return True
@@ -267,15 +259,4 @@ class VaccineManager:
 
 
 
-
-
-
-
-
-
-v=VaccineManager()
-path=v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
-
-ruta= v.get_vaccine_date(path)
-print(v.vaccine_patient(ruta))
 
