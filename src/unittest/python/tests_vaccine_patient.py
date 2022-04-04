@@ -28,6 +28,17 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(exception.exception.message, "Invalid signature")
 
 
+    def test_firma_int(self):
+        #Comprueba en el caso de un int(excepcion 1)
+        v = VaccineManager()
+        path = v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
+        firma = 152463
+        with self.assertRaises(VaccineManagementException) as exception:
+            result = v.vaccine_patient(firma)
+        self.assertEqual(exception.exception.message, "Invalid signature")
+
+
+
     def test_firma_63caracteres(self):
         v = VaccineManager()
         path = v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
@@ -40,6 +51,7 @@ class MyTestCase(unittest.TestCase):
 
 
     def test_comprobar_json_registered_vaccinations(self):
+        #Compruebo si el json esta creado o no
         v = VaccineManager()
         path = v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
         firma = v.get_vaccine_date(path)
@@ -54,7 +66,37 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(encontrado, True, "JSON no existe")
 
 
+    def test_comprobar_json_appoinments(self):
+        #Compruebo si el json appoinments esta creado o no
+        v = VaccineManager()
+        path = v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
+        firma = v.get_vaccine_date(path)
+
+        try:
+            p = open(self.pathappointments, 'r')
+            p.close()
+            encontrado = True
+
+        except FileExistsError as ex:
+            encontrado = False
+        self.assertEqual(encontrado, True, "JSON no existe")
+
+
+    def test_no_encontrada_firma(self):
+        #Se comprueba con una firma que no está en el JSON
+        v = VaccineManager()
+        path = v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
+        firma = v.get_vaccine_date(path)
+        firmaincorrecta = "1ff628e1c47df266e40d6cd5ec67f3b41b0daaa9d756d03020ccef032f2f6272"
+
+        #Pongo otra firma (para comprobar una incorrecta)
+        with self.assertRaises(VaccineManagementException) as exception:
+            result = v.vaccine_patient(firmaincorrecta)
+        self.assertEqual(exception.exception.message, "Invalid date_signature")
+
+
     def test_funcion_correcta(self):
+        #Comprueba el caso correcto
         v = VaccineManager()
         path = v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
         firma = v.get_vaccine_date(path)
@@ -63,21 +105,25 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(result, True, "Funcion incorrecta")
 
 
+    def test_comprobar_formato_JSON(self):
+        #Compruebo  la excepcion de si el formato del json no es el correcto
+        v = VaccineManager()
+        path = v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
+        firma = v.get_vaccine_date(path)
+        result = v.vaccine_patient(firma)
+        with open(self.pathregisteredvacc, "r", encoding= "utf-8") as file:
+            copia = json.load(file)
+            correcto = True
+            for n in copia:
+                print(n)
+                if list(n.keys()) != ["Access_date", "Key_value"]:
+                    correcto = False
+                    break
+            self.assertEqual(correcto, True, "Formato JSON incorrecto")
 
 
-    '''def test_error_abrir_archivo(self):
-            #Compruebo la excepcion que da, en el caso de que el path sea erroneo, y no encuentre el archivo
-            v = VaccineManager()
-            path = v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
-            firma = "1ff628e1c47df266e40d6cd5ec67f3b41b0daaa9d756d03020ccef032f2f6272" '''
 
 
-
-    '''def test_error_formato_JSON(self):
-        #Compruebo si la excepcion si el formato del json no es el correcto
-        with open(self.pathappointments, "r", encoding= "utf-8") as file:
-            copiaseguridad = file[-1]["date_signature"]
-            del[file[-1]["date_signature"]]'''
 
 
 
