@@ -1,6 +1,7 @@
 """Vaccine manager"""
 import json
 import re
+import sys
 import uuid
 from pathlib import Path
 
@@ -169,7 +170,7 @@ class VaccineManager:
         date_dict={"patient_id": date.patient_id, "phone_number": date.phone_number,
                    "vaccine_date": str(datetime.fromtimestamp(int(float(date.appoinment_date))))[0:10],"patient_system_id": date.patient_sys_id, "date_signature": date.vaccination_signature}
 
-        print ("Test")
+
         with open(self.vaccination_appointments, "r+",
                   encoding="utf-8") as file:
             data = json.load(file)
@@ -227,36 +228,52 @@ class VaccineManager:
 
         #Si no hay excepcion, la firma está dentro, por lo que paso a comprobar la fecha
         actual = str(datetime.utcnow())
-        if data[indice] != actual:
+        actualday = actual[0:10]
+        if data[indice]['vaccine_date'] == actualday:
             raise VaccineManagementException("Invalid vaccine date")
 
         else:
             #Sitodo es correcto, registro vacunacion
             #Guardo en un json, el diccionario siguiente (con lo que nos piden: fecha de acceso y firma)
-            towrite = {"Access_date": actual, "Key_value": date_signature}
-            string = json.dumps(towrite)
+            towrite = {"Access_date": actual,
+                       "Key_value": date_signature}
+            #Al abrir el archivo compruebo si da algun error
 
-            
-        #Al abrir el archivo compruebo si da algun error
-        try:    
-            with open(self.registered_vaccinations, 'w') as outfile:
-                json.dump(string, outfile)
-                outfile.close()
-                
-                
-                return True
-            
-            
-        except FileNotFoundError as ex:
-            raise VaccineManagementException("Error while opening the file")
-        except json.JSONDecodeError as ex:
-            raise VaccineManagementException("Error while decoding JSON")
-            
-            
-            
-            
-            
+            #El primer try hara saltar excepciones si el archivo no existe, o si no tiene los [] si está vacio
+            try:
+                with open(self.registered_vaccinations , 'r+', encoding='utf-8') as json_file:
+                    #Con este try simplemente compruebo si esta vacio o no, para poder hacer el json.load sin errores
+                    try:
+                        datos = json.load(json_file)
+                        datos.append(towrite)
+                        json_file.seek(0)
+                        json.dump(datos, json_file, indent=2)
+                        return True
+
+                    except:
+                        #Al estar vacio, simplemente lo añado directamente (ya que si hago el load estando vacio, dara error)
+                        json.dump(towrite, json_file, indent=2)
+
+                        return True
 
 
 
+            except FileNotFoundError or FileExistsError as ex:
+                raise VaccineManagementException("Error while opening the file")
+            except json.JSONDecodeError as ex:
+                raise VaccineManagementException("Error while decoding JSON")
+            
+            
+            
+            
+            
+
+
+v = VaccineManager()
+path = v.generate_json("fb545bec6cd4468c3c0736520a4328db", "123456789")
+path2 = v.generate_json("fb545brcxdd4468c3c0736520a1524cf", "987654321")
+firma = v.get_vaccine_date(path)
+firma2 = v.get_vaccine_date(path)
+result = v.vaccine_patient(firma)
+result2 = v.vaccine_patient(firma2)
 
