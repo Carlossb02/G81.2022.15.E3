@@ -229,7 +229,7 @@ class VaccineManager:
         #Si no hay excepcion, la firma está dentro, por lo que paso a comprobar la fecha
         actual = str(datetime.utcnow())
         actualday = actual[0:10]
-        if data[indice]['vaccine_date'] == actualday:
+        if data[indice]['vaccine_date'] != actualday:
             raise VaccineManagementException("Invalid vaccine date")
 
         else:
