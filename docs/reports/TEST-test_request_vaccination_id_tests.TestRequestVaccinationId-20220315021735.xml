@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test_request_vaccination_id_tests.TestRequestVaccinationId-20220315021735" tests="2" file="test_request_vaccination_id_tests.py" time="0.068" timestamp="2022-03-15T02:17:36" failures="1" errors="0" skipped="0">
+	<testcase classname="test_request_vaccination_id_tests.TestRequestVaccinationId" name="test_ok" time="0.052" timestamp="2022-03-15T02:17:36"/>
+	<testcase classname="test_request_vaccination_id_tests.TestRequestVaccinationId" name="test_wrong_uuid_not_v4" time="0.016" timestamp="2022-03-15T02:17:36">
+		<failure type="AssertionError" message="'Invalid patient ID' != 'Invalid UUID format'
+- Invalid patient ID
++ Invalid UUID format
+"><![CDATA[Traceback (most recent call last):
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 59, in testPartExecutor
+    yield
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 592, in run
+    self._callTestMethod(testMethod)
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 550, in _callTestMethod
+    method()
+  File "c:\users\talib\desktop\g81.2022.15.e3\src\unittest\python\test_request_vaccination_id_tests.py", line 63, in test_wrong_uuid_not_v4
+    self.assertEqual(exception.exception.message, "Invalid UUID format")
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 829, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 1209, in assertMultiLineEqual
+    self.fail(self._formatMessage(msg, standardMsg))
+  File "C:\Users\talib\AppData\Local\Programs\Python\Python39\lib\unittest\case.py", line 668, in fail
+    raise self.failureException(msg)
+AssertionError: 'Invalid patient ID' != 'Invalid UUID format'
+- Invalid patient ID
++ Invalid UUID format
+
+]]></failure>
+	</testcase>
+</testsuite>

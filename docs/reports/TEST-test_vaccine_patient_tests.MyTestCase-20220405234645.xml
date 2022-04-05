@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test_vaccine_patient_tests.MyTestCase-20220405234645" tests="8" file="test_vaccine_patient_tests.py" time="0.070" timestamp="2022-04-05T23:46:46" failures="0" errors="0" skipped="0">
+	<testcase classname="test_vaccine_patient_tests.MyTestCase" name="test_comprobar_formato_json" time="0.030" timestamp="2022-04-05T23:46:46"/>
+	<testcase classname="test_vaccine_patient_tests.MyTestCase" name="test_comprobar_json_appoinments" time="0.009" timestamp="2022-04-05T23:46:46"/>
+	<testcase classname="test_vaccine_patient_tests.MyTestCase" name="test_comprobar_json_registered_vaccinations" time="0.005" timestamp="2022-04-05T23:46:46"/>
+	<testcase classname="test_vaccine_patient_tests.MyTestCase" name="test_firma_63caracteres" time="0.002" timestamp="2022-04-05T23:46:46"/>
+	<testcase classname="test_vaccine_patient_tests.MyTestCase" name="test_firma_int" time="0.001" timestamp="2022-04-05T23:46:46"/>
+	<testcase classname="test_vaccine_patient_tests.MyTestCase" name="test_firma_none" time="0.001" timestamp="2022-04-05T23:46:46"/>
+	<testcase classname="test_vaccine_patient_tests.MyTestCase" name="test_funcion_correcta" time="0.013" timestamp="2022-04-05T23:46:46"/>
+	<testcase classname="test_vaccine_patient_tests.MyTestCase" name="test_no_encontrada_firma" time="0.009" timestamp="2022-04-05T23:46:46"/>
+</testsuite>
