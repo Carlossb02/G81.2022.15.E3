@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="test_request_vaccination_id_tests.TestRequestVaccinationId-20220316032022" tests="1" file="test_request_vaccination_id_tests.py" time="0.000" timestamp="2022-03-16T03:20:22" failures="0" errors="0" skipped="0">
-	<testcase classname="test_request_vaccination_id_tests.TestRequestVaccinationId" name="test_wrong_uuid_not_v4" time="0.000" timestamp="2022-03-16T03:20:22"/>
-</testsuite>
